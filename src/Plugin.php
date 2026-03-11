@@ -7,6 +7,8 @@
 
 namespace TomMcFarlin\MMN;
 
+defined( 'ABSPATH' ) || exit;
+
 use TomMcFarlin\MMN\Ajax\ToggleHandler;
 
 /**

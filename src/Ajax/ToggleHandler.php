@@ -7,6 +7,8 @@
 
 namespace TomMcFarlin\MMN\Ajax;
 
+defined( 'ABSPATH' ) || exit;
+
 use TomMcFarlin\MMN\NotificationMuter;
 
 /**

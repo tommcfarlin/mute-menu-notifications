@@ -7,6 +7,8 @@
 
 namespace TomMcFarlin\MMN;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Adds a state-aware mute/unmute button to the WordPress admin bar.
  */

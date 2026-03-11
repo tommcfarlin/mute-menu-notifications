@@ -7,6 +7,8 @@
 
 namespace TomMcFarlin\MMN;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Handles reading, toggling, and rendering the muted state.
  */
