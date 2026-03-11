@@ -1,3 +1,8 @@
-.tm-hide-update-count {
-    visibility: hidden;
+#wp-admin-bar-tm-mmn-toggle .ab-icon {
+	font-size: 16px;
+	margin-right: 4px;
+}
+
+#wp-admin-bar-tm-mmn-toggle .ab-icon::before {
+	top: 3px;
 }
