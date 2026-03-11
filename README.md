@@ -1,5 +1,10 @@
 # Mute Menu Notifications
 
+![WordPress Plugin Version](https://img.shields.io/badge/version-2.0.0-blue)
+![WordPress Tested](https://img.shields.io/badge/wordpress-6.9-green)
+![PHP Version](https://img.shields.io/badge/php-%3E%3D7.4-purple)
+![License](https://img.shields.io/badge/license-GPL--3.0-orange)
+
 Allows you to mute the update notification badges in the WordPress admin menu.
 
 ## Description
