@@ -5,7 +5,7 @@ Tags: admin, notifications, menu, updates, mute
 Requires at least: 6.9
 Tested up to: 6.9.1
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 2.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
@@ -26,6 +26,11 @@ The preference persists across page loads. Only users with the `update_plugins` 
 3. Click "Mute Notifications" in the admin bar to toggle notification visibility.
 
 == Changelog ==
+
+= 2.0.0 =
+* Refactored into OOP architecture with flicker-free server-side muting.
+* Added capability checks, state-aware admin bar button, and unit tests.
+* See CHANGELOG.md for full details.
 
 = 1.0.0 =
 * Initial release.

@@ -1,12 +1,25 @@
 # Mute Menu Notifications
 
-Allows you to mute the notifications in the WordPress admin menu.
+Allows you to mute the update notification badges in the WordPress admin menu.
+
+## Description
+
+Mute Menu Notifications adds a toggle to the WordPress admin bar that lets administrators hide or show the update notification badges throughout the admin menu.
+
+When muted, the red update count bubbles on menu items like Plugins, Themes, and Updates are hidden. On the Plugins page, the individual plugin update rows are also hidden.
+
+The preference persists across page loads. Only users with the `update_plugins` capability can see and use the toggle.
+
+## Requirements
+
+- PHP 7.4 or later
+- WordPress 6.9 or later
 
 ## Installation
 
-### Using The WordPress Dashboard
+### Using the WordPress Dashboard
 
-1. Navigate to the 'Add New' Plugin Dashboard.
+1. Navigate to the "Add New" Plugin Dashboard.
 2. Select `tm-mute-menu-notifications.zip` from your computer.
 3. Upload.
 4. Activate the plugin on the WordPress Plugin Dashboard.
@@ -20,4 +33,25 @@ Allows you to mute the notifications in the WordPress admin menu.
 ### Git
 
 1. Navigate to the `plugins` directory of your WordPress installation.
-2. From the terminal, run `$ git clone git@github.com:tommcfarlin/tm-mute-menu-notifications.git`
+2. Run `git clone git@github.com:tommcfarlin/tm-mute-menu-notifications.git`
+3. Run `composer install` from the plugin directory.
+
+## Development
+
+```bash
+# Install dependencies
+composer install
+
+# Run tests
+composer test
+
+# Check coding standards
+composer lint
+
+# Auto-fix coding standards
+composer lint:fix
+```
+
+## License
+
+GPL-3.0 -- see [LICENSE](LICENSE) for details.
