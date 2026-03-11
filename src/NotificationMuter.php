@@ -13,11 +13,11 @@ namespace TomMcFarlin\MMN;
 class NotificationMuter {
 
 	/**
-	 * Option name stored in wp_options.
+	 * User meta key stored in wp_usermeta.
 	 *
 	 * @var string
 	 */
-	const OPTION_KEY = 'tm_mute_menu_notifications';
+	const META_KEY = 'tm_mute_menu_notifications';
 
 	/**
 	 * Cached mute state for the current request.
@@ -42,7 +42,7 @@ class NotificationMuter {
 	 */
 	public function is_muted() {
 		if ( null === $this->muted ) {
-			$this->muted = (bool) get_option( self::OPTION_KEY, false );
+			$this->muted = (bool) get_user_meta( get_current_user_id(), self::META_KEY, true );
 		}
 
 		return $this->muted;
@@ -56,7 +56,7 @@ class NotificationMuter {
 	public function toggle() {
 		$new_state = ! $this->is_muted();
 
-		update_option( self::OPTION_KEY, $new_state );
+		update_user_meta( get_current_user_id(), self::META_KEY, $new_state );
 		$this->muted = $new_state;
 
 		return $new_state;

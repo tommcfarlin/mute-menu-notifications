@@ -33,9 +33,13 @@ class NotificationMuterTest extends \MMN_TestCase {
 	public function is_muted_returns_false_by_default() {
 		$muter = new NotificationMuter();
 
-		Functions\expect( 'get_option' )
+		Functions\expect( 'get_current_user_id' )
 			->once()
-			->with( 'tm_mute_menu_notifications', false )
+			->andReturn( 1 );
+
+		Functions\expect( 'get_user_meta' )
+			->once()
+			->with( 1, 'tm_mute_menu_notifications', true )
 			->andReturn( false );
 
 		$this->assertFalse( $muter->is_muted() );
@@ -47,9 +51,13 @@ class NotificationMuterTest extends \MMN_TestCase {
 	public function is_muted_returns_true_when_option_is_set() {
 		$muter = new NotificationMuter();
 
-		Functions\expect( 'get_option' )
+		Functions\expect( 'get_current_user_id' )
 			->once()
-			->with( 'tm_mute_menu_notifications', false )
+			->andReturn( 1 );
+
+		Functions\expect( 'get_user_meta' )
+			->once()
+			->with( 1, 'tm_mute_menu_notifications', true )
 			->andReturn( true );
 
 		$this->assertTrue( $muter->is_muted() );
@@ -61,15 +69,19 @@ class NotificationMuterTest extends \MMN_TestCase {
 	public function is_muted_caches_result_across_calls() {
 		$muter = new NotificationMuter();
 
-		Functions\expect( 'get_option' )
+		Functions\expect( 'get_current_user_id' )
 			->once()
-			->with( 'tm_mute_menu_notifications', false )
+			->andReturn( 1 );
+
+		Functions\expect( 'get_user_meta' )
+			->once()
+			->with( 1, 'tm_mute_menu_notifications', true )
 			->andReturn( true );
 
 		$first  = $muter->is_muted();
 		$second = $muter->is_muted();
 
-		// get_option should only be called once due to caching.
+		// get_user_meta should only be called once due to caching.
 		$this->assertSame( $first, $second );
 	}
 
@@ -79,14 +91,17 @@ class NotificationMuterTest extends \MMN_TestCase {
 	public function toggle_flips_from_false_to_true() {
 		$muter = new NotificationMuter();
 
-		Functions\expect( 'get_option' )
+		Functions\expect( 'get_current_user_id' )
+			->andReturn( 1 );
+
+		Functions\expect( 'get_user_meta' )
 			->once()
-			->with( 'tm_mute_menu_notifications', false )
+			->with( 1, 'tm_mute_menu_notifications', true )
 			->andReturn( false );
 
-		Functions\expect( 'update_option' )
+		Functions\expect( 'update_user_meta' )
 			->once()
-			->with( 'tm_mute_menu_notifications', true );
+			->with( 1, 'tm_mute_menu_notifications', true );
 
 		$result = $muter->toggle();
 
@@ -99,14 +114,17 @@ class NotificationMuterTest extends \MMN_TestCase {
 	public function toggle_flips_from_true_to_false() {
 		$muter = new NotificationMuter();
 
-		Functions\expect( 'get_option' )
+		Functions\expect( 'get_current_user_id' )
+			->andReturn( 1 );
+
+		Functions\expect( 'get_user_meta' )
 			->once()
-			->with( 'tm_mute_menu_notifications', false )
+			->with( 1, 'tm_mute_menu_notifications', true )
 			->andReturn( true );
 
-		Functions\expect( 'update_option' )
+		Functions\expect( 'update_user_meta' )
 			->once()
-			->with( 'tm_mute_menu_notifications', false );
+			->with( 1, 'tm_mute_menu_notifications', false );
 
 		$result = $muter->toggle();
 
@@ -119,9 +137,13 @@ class NotificationMuterTest extends \MMN_TestCase {
 	public function inject_inline_css_outputs_nothing_when_not_muted() {
 		$muter = new NotificationMuter();
 
-		Functions\expect( 'get_option' )
+		Functions\expect( 'get_current_user_id' )
 			->once()
-			->with( 'tm_mute_menu_notifications', false )
+			->andReturn( 1 );
+
+		Functions\expect( 'get_user_meta' )
+			->once()
+			->with( 1, 'tm_mute_menu_notifications', true )
 			->andReturn( false );
 
 		ob_start();
@@ -137,9 +159,13 @@ class NotificationMuterTest extends \MMN_TestCase {
 	public function inject_inline_css_outputs_hide_styles_when_muted() {
 		$muter = new NotificationMuter();
 
-		Functions\expect( 'get_option' )
+		Functions\expect( 'get_current_user_id' )
 			->once()
-			->with( 'tm_mute_menu_notifications', false )
+			->andReturn( 1 );
+
+		Functions\expect( 'get_user_meta' )
+			->once()
+			->with( 1, 'tm_mute_menu_notifications', true )
 			->andReturn( true );
 
 		ob_start();

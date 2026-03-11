@@ -9,4 +9,4 @@
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
-delete_option( 'tm_mute_menu_notifications' );
+delete_metadata( 'user', 0, 'tm_mute_menu_notifications', '', true );

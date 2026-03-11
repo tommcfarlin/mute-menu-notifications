@@ -192,6 +192,9 @@ class AdminBarTest extends \MMN_TestCase {
 			->with( 'tm_mmn_toggle' )
 			->andReturn( 'test-nonce' );
 
+		Functions\expect( '__' )
+			->andReturnFirstArg();
+
 		Functions\expect( 'wp_enqueue_style' )->once();
 		Functions\expect( 'wp_enqueue_script' )->once();
 		Functions\expect( 'wp_localize_script' )
@@ -204,7 +207,9 @@ class AdminBarTest extends \MMN_TestCase {
 						return isset( $data['ajaxUrl'] )
 							&& isset( $data['nonce'] )
 							&& isset( $data['muted'] )
-							&& false === $data['muted'];
+							&& false === $data['muted']
+							&& isset( $data['labelMute'] )
+							&& isset( $data['labelUnmute'] );
 					}
 				)
 			);

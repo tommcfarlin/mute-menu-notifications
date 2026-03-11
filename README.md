@@ -8,7 +8,7 @@ Mute Menu Notifications adds a toggle to the WordPress admin bar that lets admin
 
 When muted, the red update count bubbles on menu items like Plugins, Themes, and Updates are hidden. On the Plugins page, the individual plugin update rows are also hidden.
 
-The preference persists across page loads. Only users with the `update_plugins` capability can see and use the toggle.
+The preference is stored per-user and persists across page loads. Only users with the `update_plugins` capability (Administrators by default) can see and use the toggle. This capability was chosen because the notification badges this plugin hides (plugin updates, theme updates, core updates) are only visible to users who have that capability.
 
 ## Requirements
 

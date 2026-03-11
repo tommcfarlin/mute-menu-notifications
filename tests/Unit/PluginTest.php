@@ -17,6 +17,11 @@ class PluginTest extends \MMN_TestCase {
 	 * @test
 	 */
 	public function init_registers_all_expected_hooks() {
+		Functions\expect( 'get_option' )
+			->once()
+			->with( 'tm_mute_menu_notifications' )
+			->andReturn( false );
+
 		Functions\expect( 'add_action' )
 			->with( 'admin_head', \Mockery::type( 'array' ) )
 			->once();

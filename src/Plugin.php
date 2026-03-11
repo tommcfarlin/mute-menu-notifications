@@ -20,6 +20,10 @@ class Plugin {
 	 * @return void
 	 */
 	public static function init() {
+		if ( false !== get_option( 'tm_mute_menu_notifications' ) ) {
+			delete_option( 'tm_mute_menu_notifications' );
+		}
+
 		$muter = new NotificationMuter();
 		$muter->register();
 

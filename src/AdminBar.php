@@ -99,9 +99,11 @@ class AdminBar {
 			'tm-mute-menu-notifications',
 			'TmMuteMenuNotifications',
 			array(
-				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-				'nonce'   => wp_create_nonce( 'tm_mmn_toggle' ),
-				'muted'   => $this->muter->is_muted(),
+				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+				'nonce'       => wp_create_nonce( 'tm_mmn_toggle' ),
+				'muted'       => $this->muter->is_muted(),
+				'labelMute'   => __( 'Mute Notifications', 'tm-mute-menu-notifications' ),
+				'labelUnmute' => __( 'Unmute Notifications', 'tm-mute-menu-notifications' ),
 			)
 		);
 	}

@@ -44,7 +44,7 @@
 		}
 
 		if ( label ) {
-			label.textContent = muted ? 'Unmute Notifications' : 'Mute Notifications';
+			label.textContent = muted ? TmMuteMenuNotifications.labelUnmute : TmMuteMenuNotifications.labelMute;
 		}
 	}
 
