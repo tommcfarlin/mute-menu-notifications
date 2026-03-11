@@ -29,7 +29,12 @@ The preference is stored per-user and persists across page loads. Only users wit
 
 = 2.0.0 =
 * Refactored into OOP architecture with flicker-free server-side muting.
-* Added capability checks, state-aware admin bar button, and unit tests.
+* Mute preference is now per-user instead of site-wide.
+* Added ARIA attributes on toggle for screen reader accessibility.
+* Added translatable toggle labels in JavaScript.
+* Added visual error feedback and icon transition on toggle.
+* Added capability checks, nonce verification, and unit tests.
+* One-time cleanup of legacy option on upgrade from 1.x.
 * See CHANGELOG.md for full details.
 
 = 1.0.0 =

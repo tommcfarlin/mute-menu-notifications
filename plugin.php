@@ -5,11 +5,11 @@
  * @package   TomMcFarlin\MMN
  * @author    Tom McFarlin <tom@tommcfarlin.com>
  * @license   GPLv3 <https://www.gnu.org/licenses/gpl-3.0.en.html>
- * @link      https://github.com/tommcfarlin/tm-mute-menu-notifications/
+ * @link      https://github.com/tommcfarlin/mute-menu-notifications/
  *
  * @wordpress-plugin
  * Plugin Name: Mute Menu Notifications
- * Plugin URI:  https://github.com/tommcfarlin/tm-mute-menu-notifications/
+ * Plugin URI:  https://github.com/tommcfarlin/mute-menu-notifications/
  * Description: Allows you to mute the update notification badges in the WordPress admin menu.
  * Author:      Tom McFarlin <tom@tommcfarlin.com>
  * Author URI:  https://tommcfarlin.com
