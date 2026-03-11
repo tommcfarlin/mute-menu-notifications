@@ -1,0 +1,25 @@
+name: Research
+description: Investigate a topic or explore a technical question
+labels: ["type: research"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Research Question
+      description: What question needs to be answered?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Why is this research needed? What decisions depend on it?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and Deliverables
+      description: What should the output of this research look like?
+    validations:
+      required: true
