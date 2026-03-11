@@ -63,7 +63,10 @@ class AdminBar {
 					. '<span class="ab-label">' . esc_html( $label ) . '</span>',
 				'href'  => '#',
 				'meta'  => array(
-					'class' => 'tm-mmn-toggle',
+					'class'        => 'tm-mmn-toggle',
+					'aria-label'   => $label,
+					'role'         => 'button',
+					'aria-pressed' => $is_muted ? 'true' : 'false',
 				),
 			)
 		);

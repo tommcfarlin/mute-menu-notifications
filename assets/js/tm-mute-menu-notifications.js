@@ -38,13 +38,23 @@
 
 		var icon  = node.querySelector( '.ab-icon' );
 		var label = node.querySelector( '.ab-label' );
+		var link  = node.querySelector( 'a' );
 
 		if ( icon ) {
-			icon.className = 'ab-icon dashicons ' + ( muted ? 'dashicons-hidden' : 'dashicons-bell' );
+			icon.style.opacity = '0.5';
+			setTimeout( function() {
+				icon.className = 'ab-icon dashicons ' + ( muted ? 'dashicons-hidden' : 'dashicons-bell' );
+				icon.style.opacity = '1';
+			}, 100 );
 		}
 
 		if ( label ) {
 			label.textContent = muted ? TmMuteMenuNotifications.labelUnmute : TmMuteMenuNotifications.labelMute;
+		}
+
+		if ( link ) {
+			link.setAttribute( 'aria-pressed', muted ? 'true' : 'false' );
+			link.setAttribute( 'aria-label', muted ? TmMuteMenuNotifications.labelUnmute : TmMuteMenuNotifications.labelMute );
 		}
 	}
 
@@ -76,6 +86,13 @@
 			} )
 			.catch( function( error ) {
 				console.error( 'Mute Menu Notifications:', error );
+				var link = document.querySelector( '#' + BUTTON_ID + ' a' );
+				if ( link ) {
+					link.style.color = '#dc3232';
+					setTimeout( function() {
+						link.style.color = '';
+					}, 1500 );
+				}
 			} );
 	}
 

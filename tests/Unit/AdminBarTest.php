@@ -85,7 +85,9 @@ class AdminBarTest extends \MMN_TestCase {
 					function ( $args ) {
 						return 'tm-mmn-toggle' === $args['id']
 							&& false !== strpos( $args['title'], 'dashicons-bell' )
-							&& false !== strpos( $args['title'], 'Mute Notifications' );
+							&& false !== strpos( $args['title'], 'Mute Notifications' )
+							&& 'false' === $args['meta']['aria-pressed']
+							&& 'button' === $args['meta']['role'];
 					}
 				)
 			);
@@ -126,7 +128,9 @@ class AdminBarTest extends \MMN_TestCase {
 					function ( $args ) {
 						return 'tm-mmn-toggle' === $args['id']
 							&& false !== strpos( $args['title'], 'dashicons-hidden' )
-							&& false !== strpos( $args['title'], 'Unmute Notifications' );
+							&& false !== strpos( $args['title'], 'Unmute Notifications' )
+							&& 'true' === $args['meta']['aria-pressed']
+							&& 'button' === $args['meta']['role'];
 					}
 				)
 			);

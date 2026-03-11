@@ -5,4 +5,5 @@
 
 #wp-admin-bar-tm-mmn-toggle .ab-icon::before {
 	top: 3px;
+	transition: opacity 0.15s ease;
 }
