@@ -1,4 +1,4 @@
-# Contributing to [Plugin Name]
+# Contributing to Mute Menu Notifications
 
 Thank you for your interest in contributing. This document outlines the workflow and conventions used for development.
 
