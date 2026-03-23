@@ -1,6 +1,7 @@
 .claude
 .git
 .github
+.wordpress-org
 .gitignore
 .phpunit.result.cache
 .distignore
