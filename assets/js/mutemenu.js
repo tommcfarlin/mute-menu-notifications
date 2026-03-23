@@ -3,9 +3,30 @@
 
 	var STYLE_ID   = 'mutemenu-hide';
 	var BUTTON_ID  = 'wp-admin-bar-mutemenu-toggle';
+	var toggling   = false;
+
+	/**
+	 * Announce a message to screen readers via a live region.
+	 *
+	 * @param {string} message The message to announce.
+	 */
+	function announce( message ) {
+		var region = document.getElementById( 'mutemenu-live' );
+		if ( ! region ) {
+			region = document.createElement( 'div' );
+			region.id = 'mutemenu-live';
+			region.setAttribute( 'role', 'status' );
+			region.setAttribute( 'aria-live', 'polite' );
+			region.className = 'screen-reader-text';
+			document.body.appendChild( region );
+		}
+		region.textContent = message;
+	}
 
 	/**
 	 * Add or remove the inline style that hides notifications.
+	 *
+	 * Note: these selectors are duplicated in src/NotificationMuter.php inject_inline_css().
 	 *
 	 * @param {boolean} muted Whether notifications should be hidden.
 	 */
@@ -41,11 +62,13 @@
 		var link  = node.querySelector( 'a' );
 
 		if ( icon ) {
-			icon.style.opacity = '0.5';
-			setTimeout( function() {
+			icon.style.opacity = '0';
+			var onEnd = function() {
+				icon.removeEventListener( 'transitionend', onEnd );
 				icon.className = 'ab-icon dashicons ' + ( muted ? 'dashicons-hidden' : 'dashicons-bell' );
 				icon.style.opacity = '1';
-			}, 100 );
+			};
+			icon.addEventListener( 'transitionend', onEnd );
 		}
 
 		if ( label ) {
@@ -62,6 +85,17 @@
 	 * Send a POST request to toggle the mute state.
 	 */
 	function toggleMute() {
+		if ( toggling ) {
+			return;
+		}
+		toggling = true;
+
+		var link = document.querySelector( '#' + BUTTON_ID + ' a' );
+		if ( link ) {
+			link.setAttribute( 'aria-disabled', 'true' );
+			link.style.opacity = '0.5';
+		}
+
 		var data = new FormData();
 		data.append( 'action', 'mutemenu_toggle' );
 		data.append( 'nonce', MuteMenu.nonce );
@@ -82,16 +116,24 @@
 					var muted = result.data.muted;
 					setMuteStyle( muted );
 					updateButton( muted );
+					announce( muted ? MuteMenu.labelUnmute : MuteMenu.labelMute );
 				}
 			} )
-			.catch( function( error ) {
-				console.error( 'Mute Menu Notifications:', error );
-				var link = document.querySelector( '#' + BUTTON_ID + ' a' );
+			.catch( function() {
+				console.error( 'Mute Menu Notifications: toggle request failed.' );
 				if ( link ) {
-					link.style.color = '#dc3232';
+					link.classList.add( 'mutemenu-error' );
 					setTimeout( function() {
-						link.style.color = '';
+						link.classList.remove( 'mutemenu-error' );
 					}, 1500 );
+				}
+				announce( 'Could not update notification preference. Please try again.' );
+			} )
+			.finally( function() {
+				toggling = false;
+				if ( link ) {
+					link.removeAttribute( 'aria-disabled' );
+					link.style.opacity = '';
 				}
 			} );
 	}
@@ -104,9 +146,21 @@
 
 		var link = button.querySelector( 'a' );
 		if ( link ) {
+			link.setAttribute( 'role', 'button' );
+			link.setAttribute( 'tabindex', '0' );
+			link.setAttribute( 'aria-pressed', MuteMenu.isMuted ? 'true' : 'false' );
+			link.setAttribute( 'aria-label', MuteMenu.isMuted ? MuteMenu.labelUnmute : MuteMenu.labelMute );
+
 			link.addEventListener( 'click', function( event ) {
 				event.preventDefault();
 				toggleMute();
+			} );
+
+			link.addEventListener( 'keydown', function( event ) {
+				if ( ' ' === event.key || 'Spacebar' === event.key ) {
+					event.preventDefault();
+					toggleMute();
+				}
 			} );
 		}
 	} );

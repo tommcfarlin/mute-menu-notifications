@@ -14,6 +14,18 @@ use Brain\Monkey\Actions;
 class PluginTest extends \MuteMenu_TestCase {
 
 	/**
+	 * Reset the static initialization flag before each test.
+	 */
+	protected function setUp(): void {
+		parent::setUp();
+
+		$reflection = new \ReflectionClass( Plugin::class );
+		$prop       = $reflection->getProperty( 'initialized' );
+		$prop->setAccessible( true );
+		$prop->setValue( null, false );
+	}
+
+	/**
 	 * @test
 	 */
 	public function init_registers_all_expected_hooks() {
@@ -35,6 +47,19 @@ class PluginTest extends \MuteMenu_TestCase {
 
 		Plugin::init();
 
-		$this->assertTrue( true );
+		// Mockery expectations are verified in tearDown.
+		$this->addToAssertionCount( 1 );
+	}
+
+	/**
+	 * @test
+	 */
+	public function init_does_not_register_hooks_twice() {
+		Functions\expect( 'add_action' )->times( 4 );
+
+		Plugin::init();
+		Plugin::init();
+
+		$this->addToAssertionCount( 1 );
 	}
 }

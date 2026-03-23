@@ -3,7 +3,7 @@ Contributors: tommcfarlin
 Donate link: https://buymeacoffee.com/tommcfarlin
 Tags: admin, notifications, menu, updates, mute
 Requires at least: 6.9
-Tested up to: 6.9
+Tested up to: 6.9.1
 Requires PHP: 7.4
 Stable tag: 2.0.0
 License: GPLv3

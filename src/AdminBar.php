@@ -48,7 +48,7 @@ class AdminBar {
 	 * @return void
 	 */
 	public function add_toggle_node( $wp_admin_bar ) {
-		if ( ! current_user_can( 'update_plugins' ) ) {
+		if ( ! is_admin() || ! current_user_can( 'update_plugins' ) ) {
 			return;
 		}
 
@@ -63,12 +63,10 @@ class AdminBar {
 				'id'    => 'mutemenu-toggle',
 				'title' => '<span class="ab-icon dashicons ' . esc_attr( $icon ) . '"></span>'
 					. '<span class="ab-label">' . esc_html( $label ) . '</span>',
-				'href'  => '#',
+				'href'  => false,
 				'meta'  => array(
-					'class'        => 'mutemenu-toggle',
-					'aria-label'   => $label,
-					'role'         => 'button',
-					'aria-pressed' => $is_muted ? 'true' : 'false',
+					'class' => 'mutemenu-toggle',
+					'title' => esc_attr( $label ),
 				),
 			)
 		);
@@ -106,7 +104,7 @@ class AdminBar {
 			array(
 				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
 				'nonce'       => wp_create_nonce( 'mutemenu_toggle' ),
-				'muted'       => $this->muter->is_muted(),
+				'isMuted'     => $this->muter->is_muted() ? '1' : '',
 				'labelMute'   => __( 'Mute Notifications', 'mute-menu-notifications' ),
 				'labelUnmute' => __( 'Unmute Notifications', 'mute-menu-notifications' ),
 			)

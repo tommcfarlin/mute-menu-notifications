@@ -24,7 +24,7 @@ class NotificationMuterTest extends \MuteMenu_TestCase {
 
 		$muter->register();
 
-		$this->assertTrue( true );
+		$this->addToAssertionCount( 1 );
 	}
 
 	/**
@@ -88,8 +88,39 @@ class NotificationMuterTest extends \MuteMenu_TestCase {
 	/**
 	 * @test
 	 */
+	public function toggle_returns_current_state_for_unauthorized_users() {
+		$muter = new NotificationMuter();
+
+		Functions\expect( 'current_user_can' )
+			->once()
+			->with( 'update_plugins' )
+			->andReturn( false );
+
+		Functions\expect( 'get_current_user_id' )
+			->andReturn( 1 );
+
+		Functions\expect( 'get_user_meta' )
+			->once()
+			->with( 1, 'mutemenu_muted', true )
+			->andReturn( '' );
+
+		Functions\expect( 'update_user_meta' )->never();
+
+		$result = $muter->toggle();
+
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @test
+	 */
 	public function toggle_flips_from_false_to_true() {
 		$muter = new NotificationMuter();
+
+		Functions\expect( 'current_user_can' )
+			->once()
+			->with( 'update_plugins' )
+			->andReturn( true );
 
 		Functions\expect( 'get_current_user_id' )
 			->andReturn( 1 );
@@ -113,6 +144,11 @@ class NotificationMuterTest extends \MuteMenu_TestCase {
 	 */
 	public function toggle_flips_from_true_to_false() {
 		$muter = new NotificationMuter();
+
+		Functions\expect( 'current_user_can' )
+			->once()
+			->with( 'update_plugins' )
+			->andReturn( true );
 
 		Functions\expect( 'get_current_user_id' )
 			->andReturn( 1 );

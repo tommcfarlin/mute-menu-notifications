@@ -56,6 +56,10 @@ class NotificationMuter {
 	 * @return bool The new muted state.
 	 */
 	public function toggle() {
+		if ( ! current_user_can( 'update_plugins' ) ) {
+			return $this->is_muted();
+		}
+
 		$new_state = ! $this->is_muted();
 
 		update_user_meta( get_current_user_id(), self::META_KEY, $new_state ? '1' : '0' );
@@ -69,6 +73,8 @@ class NotificationMuter {
 	 *
 	 * Fires on admin_head so the styles are in the <head> before
 	 * the body renders, preventing any flicker.
+	 *
+	 * Note: these selectors are duplicated in assets/js/mutemenu.js setMuteStyle().
 	 *
 	 * @return void
 	 */

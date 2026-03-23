@@ -27,7 +27,7 @@ class ToggleHandlerTest extends \MuteMenu_TestCase {
 
 		$handler->register();
 
-		$this->assertTrue( true );
+		$this->addToAssertionCount( 1 );
 	}
 
 	/**
