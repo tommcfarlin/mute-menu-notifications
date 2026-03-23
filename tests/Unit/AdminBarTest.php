@@ -113,7 +113,7 @@ class AdminBarTest extends \MuteMenu_TestCase {
 						return 'mutemenu-toggle' === $args['id']
 							&& false !== strpos( $args['title'], 'dashicons-bell' )
 							&& false !== strpos( $args['title'], 'Mute Notifications' )
-							&& false === $args['href']
+							&& '#' === $args['href']
 							&& 'mutemenu-toggle' === $args['meta']['class'];
 					}
 				)
@@ -160,7 +160,7 @@ class AdminBarTest extends \MuteMenu_TestCase {
 						return 'mutemenu-toggle' === $args['id']
 							&& false !== strpos( $args['title'], 'dashicons-hidden' )
 							&& false !== strpos( $args['title'], 'Unmute Notifications' )
-							&& false === $args['href']
+							&& '#' === $args['href']
 							&& 'mutemenu-toggle' === $args['meta']['class'];
 					}
 				)
@@ -244,7 +244,10 @@ class AdminBarTest extends \MuteMenu_TestCase {
 							&& isset( $data['isMuted'] )
 							&& '' === $data['isMuted']
 							&& isset( $data['labelMute'] )
-							&& isset( $data['labelUnmute'] );
+							&& isset( $data['labelUnmute'] )
+							&& isset( $data['confirmMuted'] )
+							&& isset( $data['confirmUnmuted'] )
+							&& isset( $data['errorMessage'] );
 					}
 				)
 			);

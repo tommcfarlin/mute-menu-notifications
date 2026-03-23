@@ -44,7 +44,8 @@ class NotificationMuter {
 	 */
 	public function is_muted() {
 		if ( null === $this->muted ) {
-			$this->muted = '1' === get_user_meta( get_current_user_id(), self::META_KEY, true );
+			$user_id     = get_current_user_id();
+			$this->muted = $user_id && '1' === get_user_meta( $user_id, self::META_KEY, true );
 		}
 
 		return $this->muted;
@@ -56,13 +57,15 @@ class NotificationMuter {
 	 * @return bool The new muted state.
 	 */
 	public function toggle() {
-		if ( ! current_user_can( 'update_plugins' ) ) {
+		$user_id = get_current_user_id();
+
+		if ( ! $user_id || ! current_user_can( 'update_plugins' ) ) {
 			return $this->is_muted();
 		}
 
 		$new_state = ! $this->is_muted();
 
-		update_user_meta( get_current_user_id(), self::META_KEY, $new_state ? '1' : '0' );
+		update_user_meta( $user_id, self::META_KEY, $new_state ? '1' : '0' );
 		$this->muted = $new_state;
 
 		return $new_state;

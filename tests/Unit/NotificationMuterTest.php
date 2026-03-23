@@ -214,4 +214,37 @@ class NotificationMuterTest extends \MuteMenu_TestCase {
 		$this->assertStringContainsString( '.plugin-update-tr', $output );
 		$this->assertStringContainsString( 'display: none', $output );
 	}
+
+	/**
+	 * @test
+	 */
+	public function is_muted_returns_false_for_zero_user_id() {
+		$muter = new NotificationMuter();
+
+		Functions\expect( 'get_current_user_id' )
+			->once()
+			->andReturn( 0 );
+
+		Functions\expect( 'get_user_meta' )->never();
+
+		$this->assertFalse( $muter->is_muted() );
+	}
+
+	/**
+	 * @test
+	 */
+	public function toggle_returns_false_for_zero_user_id() {
+		$muter = new NotificationMuter();
+
+		Functions\expect( 'get_current_user_id' )
+			->andReturn( 0 );
+
+		Functions\expect( 'current_user_can' )->never();
+		Functions\expect( 'update_user_meta' )->never();
+		Functions\expect( 'get_user_meta' )->never();
+
+		$result = $muter->toggle();
+
+		$this->assertFalse( $result );
+	}
 }

@@ -22,6 +22,13 @@ class AdminBar {
 	private $muter;
 
 	/**
+	 * Cached capability check result.
+	 *
+	 * @var bool|null
+	 */
+	private $can_manage = null;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param NotificationMuter $muter The notification muter instance.
@@ -41,6 +48,18 @@ class AdminBar {
 	}
 
 	/**
+	 * Check if current user can manage plugin updates (cached).
+	 *
+	 * @return bool
+	 */
+	private function user_can_manage() {
+		if ( null === $this->can_manage ) {
+			$this->can_manage = current_user_can( 'update_plugins' );
+		}
+		return $this->can_manage;
+	}
+
+	/**
 	 * Add the mute/unmute toggle node to the admin bar.
 	 *
 	 * @param \WP_Admin_Bar $wp_admin_bar The admin bar instance.
@@ -48,7 +67,7 @@ class AdminBar {
 	 * @return void
 	 */
 	public function add_toggle_node( $wp_admin_bar ) {
-		if ( ! is_admin() || ! current_user_can( 'update_plugins' ) ) {
+		if ( ! is_admin() || ! $this->user_can_manage() ) {
 			return;
 		}
 
@@ -63,7 +82,7 @@ class AdminBar {
 				'id'    => 'mutemenu-toggle',
 				'title' => '<span class="ab-icon dashicons ' . esc_attr( $icon ) . '"></span>'
 					. '<span class="ab-label">' . esc_html( $label ) . '</span>',
-				'href'  => false,
+				'href'  => '#',
 				'meta'  => array(
 					'class' => 'mutemenu-toggle',
 					'title' => esc_attr( $label ),
@@ -78,7 +97,7 @@ class AdminBar {
 	 * @return void
 	 */
 	public function enqueue_assets() {
-		if ( ! current_user_can( 'update_plugins' ) ) {
+		if ( ! $this->user_can_manage() ) {
 			return;
 		}
 
@@ -95,18 +114,24 @@ class AdminBar {
 			plugins_url( 'assets/js/mutemenu.js', MUTEMENU_PLUGIN_FILE ),
 			array(),
 			MUTEMENU_VERSION,
-			true
+			array(
+				'in_footer' => true,
+				'strategy'  => 'defer',
+			)
 		);
 
 		wp_localize_script(
 			'mutemenu',
 			'MuteMenu',
 			array(
-				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
-				'nonce'       => wp_create_nonce( 'mutemenu_toggle' ),
-				'isMuted'     => $this->muter->is_muted() ? '1' : '',
-				'labelMute'   => __( 'Mute Notifications', 'mute-menu-notifications' ),
-				'labelUnmute' => __( 'Unmute Notifications', 'mute-menu-notifications' ),
+				'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
+				'nonce'          => wp_create_nonce( 'mutemenu_toggle' ),
+				'isMuted'        => $this->muter->is_muted() ? '1' : '',
+				'labelMute'      => __( 'Mute Notifications', 'mute-menu-notifications' ),
+				'labelUnmute'    => __( 'Unmute Notifications', 'mute-menu-notifications' ),
+				'confirmMuted'   => __( 'Notifications muted.', 'mute-menu-notifications' ),
+				'confirmUnmuted' => __( 'Notifications unmuted.', 'mute-menu-notifications' ),
+				'errorMessage'   => __( 'Could not update notification preference. Please try again.', 'mute-menu-notifications' ),
 			)
 		);
 	}

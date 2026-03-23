@@ -63,12 +63,18 @@
 
 		if ( icon ) {
 			icon.style.opacity = '0';
+			var settled = false;
 			var onEnd = function() {
+				if ( settled ) {
+					return;
+				}
+				settled = true;
 				icon.removeEventListener( 'transitionend', onEnd );
 				icon.className = 'ab-icon dashicons ' + ( muted ? 'dashicons-hidden' : 'dashicons-bell' );
 				icon.style.opacity = '1';
 			};
 			icon.addEventListener( 'transitionend', onEnd );
+			setTimeout( onEnd, 200 );
 		}
 
 		if ( label ) {
@@ -92,6 +98,7 @@
 
 		var link = document.querySelector( '#' + BUTTON_ID + ' a' );
 		if ( link ) {
+			link.classList.remove( 'mutemenu-error' );
 			link.setAttribute( 'aria-disabled', 'true' );
 			link.style.opacity = '0.5';
 		}
@@ -103,6 +110,7 @@
 		fetch( MuteMenu.ajaxUrl, {
 			method: 'POST',
 			credentials: 'same-origin',
+			headers: { 'X-Requested-With': 'XMLHttpRequest' },
 			body: data
 		} )
 			.then( function( response ) {
@@ -113,21 +121,18 @@
 			} )
 			.then( function( result ) {
 				if ( result.success ) {
-					var muted = result.data.muted;
+					var muted = !! ( result.data && result.data.muted );
 					setMuteStyle( muted );
 					updateButton( muted );
-					announce( muted ? MuteMenu.labelUnmute : MuteMenu.labelMute );
+					announce( muted ? MuteMenu.confirmMuted : MuteMenu.confirmUnmuted );
 				}
 			} )
 			.catch( function() {
 				console.error( 'Mute Menu Notifications: toggle request failed.' );
 				if ( link ) {
 					link.classList.add( 'mutemenu-error' );
-					setTimeout( function() {
-						link.classList.remove( 'mutemenu-error' );
-					}, 1500 );
 				}
-				announce( 'Could not update notification preference. Please try again.' );
+				announce( MuteMenu.errorMessage );
 			} )
 			.finally( function() {
 				toggling = false;

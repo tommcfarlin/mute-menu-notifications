@@ -27,6 +27,24 @@ define( 'MUTEMENU_VERSION', '2.0.0' );
 define( 'MUTEMENU_PLUGIN_FILE', __FILE__ );
 define( 'MUTEMENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
-require_once MUTEMENU_PLUGIN_DIR . 'vendor/autoload.php';
+spl_autoload_register(
+	function ( $class_name ) {
+		$prefix = 'TomMcFarlin\\MMN\\';
+		$len    = strlen( $prefix );
 
-TomMcFarlin\MMN\Plugin::init();
+		if ( 0 !== strncmp( $prefix, $class_name, $len ) ) {
+			return;
+		}
+
+		$relative = substr( $class_name, $len );
+		$file     = MUTEMENU_PLUGIN_DIR . 'src/' . str_replace( '\\', '/', $relative ) . '.php';
+
+		if ( file_exists( $file ) ) {
+			require_once $file;
+		}
+	}
+);
+
+if ( is_admin() || wp_doing_ajax() ) {
+	TomMcFarlin\MMN\Plugin::init();
+}

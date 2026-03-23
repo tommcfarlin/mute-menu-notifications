@@ -21,7 +21,7 @@ The preference is stored per-user and persists across page loads. Only users wit
 
 == Installation ==
 
-1. Upload the `tm-mute-menu-notifications` directory to `/wp-content/plugins/`.
+1. Upload the `mute-menu-notifications` directory to `/wp-content/plugins/`.
 2. Activate the plugin through the Plugins menu in WordPress.
 3. Click "Mute Notifications" in the admin bar to toggle notification visibility.
 
@@ -34,7 +34,6 @@ The preference is stored per-user and persists across page loads. Only users wit
 * Added translatable toggle labels in JavaScript.
 * Added visual error feedback and icon transition on toggle.
 * Added capability checks, nonce verification, and unit tests.
-* One-time cleanup of legacy option on upgrade from 1.x.
 * See CHANGELOG.md for full details.
 
 = 1.0.0 =

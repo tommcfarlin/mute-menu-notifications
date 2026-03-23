@@ -2,7 +2,7 @@
 
 ## Plugin Overview
 
-WordPress admin plugin that lets administrators hide update notification badges from the admin menu. Site-wide toggle stored as a WordPress option.
+WordPress admin plugin that lets administrators hide update notification badges from the admin menu. Per-user toggle stored as WordPress user meta.
 
 ## Conventions
 
@@ -50,5 +50,7 @@ Use these personas when reviewing code from different perspectives:
 - Do not use emoji in PR descriptions or commit messages
 - Always use commitlint formatted commits
 - This plugin is NOT yet in the WordPress.org plugin repository
-- Site-wide option (not per-user) for the mute preference
+- Per-user preference stored as user meta (`mutemenu_muted` key)
+- AJAX action: `mutemenu_toggle` (POST)
+- Nonce action: `mutemenu_toggle`
 - Only users with `update_plugins` capability should see the toggle or access AJAX endpoints
