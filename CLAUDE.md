@@ -16,7 +16,7 @@ WordPress admin plugin that lets administrators hide update notification badges 
 
 ## Key Files
 
-- `plugin.php` -- Bootstrap (constants, autoloader, `Plugin::init()`)
+- `mute-menu-notifications.php` -- Bootstrap (constants, autoloader, `Plugin::init()`)
 - `src/Plugin.php` -- Hook coordinator
 - `src/NotificationMuter.php` -- Core mute logic, inline CSS injection
 - `src/AdminBar.php` -- Admin bar toggle button with state-aware UI

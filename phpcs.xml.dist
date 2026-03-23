@@ -2,7 +2,7 @@
 <ruleset name="Mute Menu Notifications">
 	<description>WordPress Coding Standards for Mute Menu Notifications.</description>
 
-	<file>plugin.php</file>
+	<file>mute-menu-notifications.php</file>
 	<file>src/</file>
 	<file>uninstall.php</file>
 
