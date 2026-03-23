@@ -20,5 +20,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tm-mute-menu-notifications
+          name: mute-menu-notifications
           path: ${{ steps.build.outputs.zip_path }}
