@@ -51,7 +51,7 @@ class ToggleHandler {
 
 		if ( ! current_user_can( 'update_plugins' ) ) {
 			wp_send_json_error(
-				__( 'You do not have permission to perform this action.', 'tm-mute-menu-notifications' ),
+				__( 'You do not have permission to perform this action.', 'mute-menu-notifications' ),
 				403
 			);
 		}

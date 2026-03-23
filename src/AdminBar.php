@@ -54,8 +54,8 @@ class AdminBar {
 
 		$is_muted = $this->muter->is_muted();
 		$label    = $is_muted
-			? __( 'Unmute Notifications', 'tm-mute-menu-notifications' )
-			: __( 'Mute Notifications', 'tm-mute-menu-notifications' );
+			? __( 'Unmute Notifications', 'mute-menu-notifications' )
+			: __( 'Mute Notifications', 'mute-menu-notifications' );
 		$icon     = $is_muted ? 'dashicons-hidden' : 'dashicons-bell';
 
 		$wp_admin_bar->add_node(
@@ -107,8 +107,8 @@ class AdminBar {
 				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
 				'nonce'       => wp_create_nonce( 'tm_mmn_toggle' ),
 				'muted'       => $this->muter->is_muted(),
-				'labelMute'   => __( 'Mute Notifications', 'tm-mute-menu-notifications' ),
-				'labelUnmute' => __( 'Unmute Notifications', 'tm-mute-menu-notifications' ),
+				'labelMute'   => __( 'Mute Notifications', 'mute-menu-notifications' ),
+				'labelUnmute' => __( 'Unmute Notifications', 'mute-menu-notifications' ),
 			)
 		);
 	}
