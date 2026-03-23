@@ -170,7 +170,7 @@ class AdminBarTest extends \MMN_TestCase {
 		$admin_bar = new AdminBar( $muter );
 
 		if ( ! defined( 'TMM_PLUGIN_FILE' ) ) {
-			define( 'TMM_PLUGIN_FILE', '/path/to/plugin.php' );
+			define( 'TMM_PLUGIN_FILE', '/path/to/mute-menu-notifications.php' );
 		}
 
 		if ( ! defined( 'TMM_VERSION' ) ) {
