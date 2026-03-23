@@ -1,8 +1,8 @@
 ( function() {
 	'use strict';
 
-	var STYLE_ID   = 'tm-mmn-hide';
-	var BUTTON_ID  = 'wp-admin-bar-tm-mmn-toggle';
+	var STYLE_ID   = 'mutemenu-hide';
+	var BUTTON_ID  = 'wp-admin-bar-mutemenu-toggle';
 
 	/**
 	 * Add or remove the inline style that hides notifications.
@@ -49,12 +49,12 @@
 		}
 
 		if ( label ) {
-			label.textContent = muted ? TmMuteMenuNotifications.labelUnmute : TmMuteMenuNotifications.labelMute;
+			label.textContent = muted ? MuteMenu.labelUnmute : MuteMenu.labelMute;
 		}
 
 		if ( link ) {
 			link.setAttribute( 'aria-pressed', muted ? 'true' : 'false' );
-			link.setAttribute( 'aria-label', muted ? TmMuteMenuNotifications.labelUnmute : TmMuteMenuNotifications.labelMute );
+			link.setAttribute( 'aria-label', muted ? MuteMenu.labelUnmute : MuteMenu.labelMute );
 		}
 	}
 
@@ -63,10 +63,10 @@
 	 */
 	function toggleMute() {
 		var data = new FormData();
-		data.append( 'action', 'tm_mmn_toggle' );
-		data.append( 'nonce', TmMuteMenuNotifications.nonce );
+		data.append( 'action', 'mutemenu_toggle' );
+		data.append( 'nonce', MuteMenu.nonce );
 
-		fetch( TmMuteMenuNotifications.ajaxUrl, {
+		fetch( MuteMenu.ajaxUrl, {
 			method: 'POST',
 			credentials: 'same-origin',
 			body: data

@@ -18,15 +18,15 @@
  * Requires PHP: 7.4
  * License:     GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
- * Text Domain: tm-mute-menu-notifications
+ * Text Domain: mute-menu-notifications
  */
 
 defined( 'WPINC' ) || die;
 
-define( 'TMM_VERSION', '2.0.0' );
-define( 'TMM_PLUGIN_FILE', __FILE__ );
-define( 'TMM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'MUTEMENU_VERSION', '2.0.0' );
+define( 'MUTEMENU_PLUGIN_FILE', __FILE__ );
+define( 'MUTEMENU_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
-require_once TMM_PLUGIN_DIR . 'vendor/autoload.php';
+require_once MUTEMENU_PLUGIN_DIR . 'vendor/autoload.php';
 
 TomMcFarlin\MMN\Plugin::init();

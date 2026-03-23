@@ -19,7 +19,7 @@ class NotificationMuter {
 	 *
 	 * @var string
 	 */
-	const META_KEY = 'tm_mute_menu_notifications';
+	const META_KEY = 'mutemenu_muted';
 
 	/**
 	 * Cached mute state for the current request.
@@ -44,7 +44,7 @@ class NotificationMuter {
 	 */
 	public function is_muted() {
 		if ( null === $this->muted ) {
-			$this->muted = (bool) get_user_meta( get_current_user_id(), self::META_KEY, true );
+			$this->muted = '1' === get_user_meta( get_current_user_id(), self::META_KEY, true );
 		}
 
 		return $this->muted;
@@ -58,7 +58,7 @@ class NotificationMuter {
 	public function toggle() {
 		$new_state = ! $this->is_muted();
 
-		update_user_meta( get_current_user_id(), self::META_KEY, $new_state );
+		update_user_meta( get_current_user_id(), self::META_KEY, $new_state ? '1' : '0' );
 		$this->muted = $new_state;
 
 		return $new_state;
@@ -77,7 +77,7 @@ class NotificationMuter {
 			return;
 		}
 
-		echo '<style id="tm-mmn-hide">'
+		echo '<style id="mutemenu-hide">'
 			. '.update-plugins { display: none !important; }'
 			. '#wp-admin-bar-updates { display: none !important; }'
 			. '.plugin-update-tr { display: none !important; }'

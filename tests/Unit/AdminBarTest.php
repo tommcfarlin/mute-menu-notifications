@@ -12,7 +12,7 @@ use TomMcFarlin\MMN\NotificationMuter;
 use Brain\Monkey\Functions;
 use Mockery;
 
-class AdminBarTest extends \MMN_TestCase {
+class AdminBarTest extends \MuteMenu_TestCase {
 
 	/**
 	 * @test
@@ -83,7 +83,7 @@ class AdminBarTest extends \MMN_TestCase {
 			->with(
 				Mockery::on(
 					function ( $args ) {
-						return 'tm-mmn-toggle' === $args['id']
+						return 'mutemenu-toggle' === $args['id']
 							&& false !== strpos( $args['title'], 'dashicons-bell' )
 							&& false !== strpos( $args['title'], 'Mute Notifications' )
 							&& 'false' === $args['meta']['aria-pressed']
@@ -126,7 +126,7 @@ class AdminBarTest extends \MMN_TestCase {
 			->with(
 				Mockery::on(
 					function ( $args ) {
-						return 'tm-mmn-toggle' === $args['id']
+						return 'mutemenu-toggle' === $args['id']
 							&& false !== strpos( $args['title'], 'dashicons-hidden' )
 							&& false !== strpos( $args['title'], 'Unmute Notifications' )
 							&& 'true' === $args['meta']['aria-pressed']
@@ -169,12 +169,12 @@ class AdminBarTest extends \MMN_TestCase {
 
 		$admin_bar = new AdminBar( $muter );
 
-		if ( ! defined( 'TMM_PLUGIN_FILE' ) ) {
-			define( 'TMM_PLUGIN_FILE', '/path/to/plugin.php' );
+		if ( ! defined( 'MUTEMENU_PLUGIN_FILE' ) ) {
+			define( 'MUTEMENU_PLUGIN_FILE', '/path/to/plugin.php' );
 		}
 
-		if ( ! defined( 'TMM_VERSION' ) ) {
-			define( 'TMM_VERSION', '2.0.0' );
+		if ( ! defined( 'MUTEMENU_VERSION' ) ) {
+			define( 'MUTEMENU_VERSION', '2.0.0' );
 		}
 
 		Functions\expect( 'current_user_can' )
@@ -184,7 +184,7 @@ class AdminBarTest extends \MMN_TestCase {
 
 		Functions\expect( 'plugins_url' )
 			->twice()
-			->andReturn( 'http://example.com/assets/css/tm-mute-menu-notifications.css' );
+			->andReturn( 'http://example.com/assets/css/mutemenu.css' );
 
 		Functions\expect( 'admin_url' )
 			->once()
@@ -193,7 +193,7 @@ class AdminBarTest extends \MMN_TestCase {
 
 		Functions\expect( 'wp_create_nonce' )
 			->once()
-			->with( 'tm_mmn_toggle' )
+			->with( 'mutemenu_toggle' )
 			->andReturn( 'test-nonce' );
 
 		Functions\expect( '__' )
@@ -204,8 +204,8 @@ class AdminBarTest extends \MMN_TestCase {
 		Functions\expect( 'wp_localize_script' )
 			->once()
 			->with(
-				'tm-mute-menu-notifications',
-				'TmMuteMenuNotifications',
+				'mutemenu',
+				'MuteMenu',
 				Mockery::on(
 					function ( $data ) {
 						return isset( $data['ajaxUrl'] )

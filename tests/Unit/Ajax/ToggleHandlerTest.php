@@ -12,7 +12,7 @@ use TomMcFarlin\MMN\NotificationMuter;
 use Brain\Monkey\Functions;
 use Mockery;
 
-class ToggleHandlerTest extends \MMN_TestCase {
+class ToggleHandlerTest extends \MuteMenu_TestCase {
 
 	/**
 	 * @test
@@ -23,11 +23,34 @@ class ToggleHandlerTest extends \MMN_TestCase {
 
 		Functions\expect( 'add_action' )
 			->once()
-			->with( 'wp_ajax_tm_mmn_toggle', array( $handler, 'handle' ) );
+			->with( 'wp_ajax_mutemenu_toggle', array( $handler, 'handle' ) );
 
 		$handler->register();
 
 		$this->assertTrue( true );
+	}
+
+	/**
+	 * @test
+	 */
+	public function handle_dies_on_invalid_nonce() {
+		$muter = Mockery::mock( NotificationMuter::class );
+		$muter->shouldNotReceive( 'toggle' );
+
+		$handler = new ToggleHandler( $muter );
+
+		Functions\expect( 'check_ajax_referer' )
+			->once()
+			->with( 'mutemenu_toggle', 'nonce' )
+			->andReturnUsing(
+				function () {
+					throw new \RuntimeException( 'wp_die called' );
+				}
+			);
+
+		$this->expectException( \RuntimeException::class );
+
+		$handler->handle();
 	}
 
 	/**
@@ -41,7 +64,7 @@ class ToggleHandlerTest extends \MMN_TestCase {
 
 		Functions\expect( 'check_ajax_referer' )
 			->once()
-			->with( 'tm_mmn_toggle', 'nonce' );
+			->with( 'mutemenu_toggle', 'nonce' );
 
 		Functions\expect( 'current_user_can' )
 			->once()
@@ -85,7 +108,7 @@ class ToggleHandlerTest extends \MMN_TestCase {
 
 		Functions\expect( 'check_ajax_referer' )
 			->once()
-			->with( 'tm_mmn_toggle', 'nonce' );
+			->with( 'mutemenu_toggle', 'nonce' );
 
 		Functions\expect( 'current_user_can' )
 			->once()

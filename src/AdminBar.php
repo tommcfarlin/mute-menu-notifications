@@ -54,18 +54,18 @@ class AdminBar {
 
 		$is_muted = $this->muter->is_muted();
 		$label    = $is_muted
-			? __( 'Unmute Notifications', 'tm-mute-menu-notifications' )
-			: __( 'Mute Notifications', 'tm-mute-menu-notifications' );
+			? __( 'Unmute Notifications', 'mute-menu-notifications' )
+			: __( 'Mute Notifications', 'mute-menu-notifications' );
 		$icon     = $is_muted ? 'dashicons-hidden' : 'dashicons-bell';
 
 		$wp_admin_bar->add_node(
 			array(
-				'id'    => 'tm-mmn-toggle',
+				'id'    => 'mutemenu-toggle',
 				'title' => '<span class="ab-icon dashicons ' . esc_attr( $icon ) . '"></span>'
 					. '<span class="ab-label">' . esc_html( $label ) . '</span>',
 				'href'  => '#',
 				'meta'  => array(
-					'class'        => 'tm-mmn-toggle',
+					'class'        => 'mutemenu-toggle',
 					'aria-label'   => $label,
 					'role'         => 'button',
 					'aria-pressed' => $is_muted ? 'true' : 'false',
@@ -85,30 +85,30 @@ class AdminBar {
 		}
 
 		wp_enqueue_style(
-			'tm-mute-menu-notifications',
-			plugins_url( 'assets/css/tm-mute-menu-notifications.css', TMM_PLUGIN_FILE ),
+			'mutemenu',
+			plugins_url( 'assets/css/mutemenu.css', MUTEMENU_PLUGIN_FILE ),
 			array(),
-			TMM_VERSION,
+			MUTEMENU_VERSION,
 			'all'
 		);
 
 		wp_enqueue_script(
-			'tm-mute-menu-notifications',
-			plugins_url( 'assets/js/tm-mute-menu-notifications.js', TMM_PLUGIN_FILE ),
+			'mutemenu',
+			plugins_url( 'assets/js/mutemenu.js', MUTEMENU_PLUGIN_FILE ),
 			array(),
-			TMM_VERSION,
+			MUTEMENU_VERSION,
 			true
 		);
 
 		wp_localize_script(
-			'tm-mute-menu-notifications',
-			'TmMuteMenuNotifications',
+			'mutemenu',
+			'MuteMenu',
 			array(
 				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
-				'nonce'       => wp_create_nonce( 'tm_mmn_toggle' ),
+				'nonce'       => wp_create_nonce( 'mutemenu_toggle' ),
 				'muted'       => $this->muter->is_muted(),
-				'labelMute'   => __( 'Mute Notifications', 'tm-mute-menu-notifications' ),
-				'labelUnmute' => __( 'Unmute Notifications', 'tm-mute-menu-notifications' ),
+				'labelMute'   => __( 'Mute Notifications', 'mute-menu-notifications' ),
+				'labelUnmute' => __( 'Unmute Notifications', 'mute-menu-notifications' ),
 			)
 		);
 	}

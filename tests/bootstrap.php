@@ -15,7 +15,7 @@ use Brain\Monkey;
 /**
  * Base test case for all plugin tests.
  */
-class MMN_TestCase extends \PHPUnit\Framework\TestCase {
+class MuteMenu_TestCase extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Set up Brain Monkey before each test.

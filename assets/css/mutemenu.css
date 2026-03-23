@@ -1,0 +1,9 @@
+#wp-admin-bar-mutemenu-toggle .ab-icon {
+	font-size: 16px;
+	margin-right: 4px;
+}
+
+#wp-admin-bar-mutemenu-toggle .ab-icon::before {
+	top: 3px;
+	transition: opacity 0.15s ease;
+}

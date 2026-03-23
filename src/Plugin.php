@@ -17,14 +17,22 @@ use TomMcFarlin\MMN\Ajax\ToggleHandler;
 class Plugin {
 
 	/**
+	 * Whether the plugin has been initialized.
+	 *
+	 * @var bool
+	 */
+	private static $initialized = false;
+
+	/**
 	 * Initialize the plugin and register all hooks.
 	 *
 	 * @return void
 	 */
 	public static function init() {
-		if ( false !== get_option( 'tm_mute_menu_notifications' ) ) {
-			delete_option( 'tm_mute_menu_notifications' );
+		if ( self::$initialized ) {
+			return;
 		}
+		self::$initialized = true;
 
 		$muter = new NotificationMuter();
 		$muter->register();
