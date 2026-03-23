@@ -1,9 +1,9 @@
 {
-    "name": "tommcfarlin/tm-mute-menu-notifications",
+    "name": "tommcfarlin/mute-menu-notifications",
     "description": "Allows you to mute the notifications in the WordPress admin menu.",
     "type": "wordpress-plugin",
     "license": "GPL-3.0-or-later",
-    "homepage": "https://github.com/tommcfarlin/tm-mute-menu-notifications/",
+    "homepage": "https://github.com/tommcfarlin/mute-menu-notifications/",
     "authors": [
         {
             "name": "Tom McFarlin",
@@ -12,7 +12,7 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/tommcfarlin/tm-mute-menu-notifications/issues"
+        "issues": "https://github.com/tommcfarlin/mute-menu-notifications/issues"
     },
     "config": {
         "vendor-dir": "vendor",

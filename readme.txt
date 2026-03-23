@@ -21,7 +21,7 @@ The preference is stored per-user and persists across page loads. Only users wit
 
 == Installation ==
 
-1. Upload the `tm-mute-menu-notifications` directory to `/wp-content/plugins/`.
+1. Upload the `mute-menu-notifications` directory to `/wp-content/plugins/`.
 2. Activate the plugin through the Plugins menu in WordPress.
 3. Click "Mute Notifications" in the admin bar to toggle notification visibility.
 
