@@ -12,7 +12,7 @@ use TomMcFarlin\MMN\NotificationMuter;
 use Brain\Monkey\Functions;
 use Mockery;
 
-class AdminBarTest extends \MMN_TestCase {
+class AdminBarTest extends \MuteMenu_TestCase {
 
 	/**
 	 * @test
@@ -31,7 +31,26 @@ class AdminBarTest extends \MMN_TestCase {
 
 		$admin_bar->register();
 
-		$this->assertTrue( true );
+		$this->addToAssertionCount( 1 );
+	}
+
+	/**
+	 * @test
+	 */
+	public function add_toggle_node_skips_when_not_admin() {
+		$muter     = Mockery::mock( NotificationMuter::class );
+		$admin_bar = new AdminBar( $muter );
+
+		Functions\expect( 'is_admin' )
+			->once()
+			->andReturn( false );
+
+		$wp_admin_bar = Mockery::mock( 'WP_Admin_Bar' );
+		$wp_admin_bar->shouldNotReceive( 'add_node' );
+
+		$admin_bar->add_toggle_node( $wp_admin_bar );
+
+		$this->addToAssertionCount( 1 );
 	}
 
 	/**
@@ -40,6 +59,10 @@ class AdminBarTest extends \MMN_TestCase {
 	public function add_toggle_node_skips_for_unauthorized_users() {
 		$muter     = Mockery::mock( NotificationMuter::class );
 		$admin_bar = new AdminBar( $muter );
+
+		Functions\expect( 'is_admin' )
+			->once()
+			->andReturn( true );
 
 		Functions\expect( 'current_user_can' )
 			->once()
@@ -51,7 +74,7 @@ class AdminBarTest extends \MMN_TestCase {
 
 		$admin_bar->add_toggle_node( $wp_admin_bar );
 
-		$this->assertTrue( true );
+		$this->addToAssertionCount( 1 );
 	}
 
 	/**
@@ -63,6 +86,10 @@ class AdminBarTest extends \MMN_TestCase {
 
 		$admin_bar = new AdminBar( $muter );
 
+		Functions\expect( 'is_admin' )
+			->once()
+			->andReturn( true );
+
 		Functions\expect( 'current_user_can' )
 			->once()
 			->with( 'update_plugins' )
@@ -83,18 +110,18 @@ class AdminBarTest extends \MMN_TestCase {
 			->with(
 				Mockery::on(
 					function ( $args ) {
-						return 'tm-mmn-toggle' === $args['id']
+						return 'mutemenu-toggle' === $args['id']
 							&& false !== strpos( $args['title'], 'dashicons-bell' )
 							&& false !== strpos( $args['title'], 'Mute Notifications' )
-							&& 'false' === $args['meta']['aria-pressed']
-							&& 'button' === $args['meta']['role'];
+							&& '#' === $args['href']
+							&& 'mutemenu-toggle' === $args['meta']['class'];
 					}
 				)
 			);
 
 		$admin_bar->add_toggle_node( $wp_admin_bar );
 
-		$this->assertTrue( true );
+		$this->addToAssertionCount( 1 );
 	}
 
 	/**
@@ -106,6 +133,10 @@ class AdminBarTest extends \MMN_TestCase {
 
 		$admin_bar = new AdminBar( $muter );
 
+		Functions\expect( 'is_admin' )
+			->once()
+			->andReturn( true );
+
 		Functions\expect( 'current_user_can' )
 			->once()
 			->with( 'update_plugins' )
@@ -126,18 +157,18 @@ class AdminBarTest extends \MMN_TestCase {
 			->with(
 				Mockery::on(
 					function ( $args ) {
-						return 'tm-mmn-toggle' === $args['id']
+						return 'mutemenu-toggle' === $args['id']
 							&& false !== strpos( $args['title'], 'dashicons-hidden' )
 							&& false !== strpos( $args['title'], 'Unmute Notifications' )
-							&& 'true' === $args['meta']['aria-pressed']
-							&& 'button' === $args['meta']['role'];
+							&& '#' === $args['href']
+							&& 'mutemenu-toggle' === $args['meta']['class'];
 					}
 				)
 			);
 
 		$admin_bar->add_toggle_node( $wp_admin_bar );
 
-		$this->assertTrue( true );
+		$this->addToAssertionCount( 1 );
 	}
 
 	/**
@@ -157,7 +188,7 @@ class AdminBarTest extends \MMN_TestCase {
 
 		$admin_bar->enqueue_assets();
 
-		$this->assertTrue( true );
+		$this->addToAssertionCount( 1 );
 	}
 
 	/**
@@ -169,12 +200,12 @@ class AdminBarTest extends \MMN_TestCase {
 
 		$admin_bar = new AdminBar( $muter );
 
-		if ( ! defined( 'TMM_PLUGIN_FILE' ) ) {
-			define( 'TMM_PLUGIN_FILE', '/path/to/plugin.php' );
+		if ( ! defined( 'MUTEMENU_PLUGIN_FILE' ) ) {
+			define( 'MUTEMENU_PLUGIN_FILE', '/path/to/mute-menu-notifications.php' );
 		}
 
-		if ( ! defined( 'TMM_VERSION' ) ) {
-			define( 'TMM_VERSION', '2.0.0' );
+		if ( ! defined( 'MUTEMENU_VERSION' ) ) {
+			define( 'MUTEMENU_VERSION', '2.0.0' );
 		}
 
 		Functions\expect( 'current_user_can' )
@@ -184,7 +215,7 @@ class AdminBarTest extends \MMN_TestCase {
 
 		Functions\expect( 'plugins_url' )
 			->twice()
-			->andReturn( 'http://example.com/assets/css/tm-mute-menu-notifications.css' );
+			->andReturn( 'http://example.com/assets/css/mutemenu.css' );
 
 		Functions\expect( 'admin_url' )
 			->once()
@@ -193,7 +224,7 @@ class AdminBarTest extends \MMN_TestCase {
 
 		Functions\expect( 'wp_create_nonce' )
 			->once()
-			->with( 'tm_mmn_toggle' )
+			->with( 'mutemenu_toggle' )
 			->andReturn( 'test-nonce' );
 
 		Functions\expect( '__' )
@@ -204,22 +235,25 @@ class AdminBarTest extends \MMN_TestCase {
 		Functions\expect( 'wp_localize_script' )
 			->once()
 			->with(
-				'tm-mute-menu-notifications',
-				'TmMuteMenuNotifications',
+				'mutemenu',
+				'MuteMenu',
 				Mockery::on(
 					function ( $data ) {
 						return isset( $data['ajaxUrl'] )
 							&& isset( $data['nonce'] )
-							&& isset( $data['muted'] )
-							&& false === $data['muted']
+							&& isset( $data['isMuted'] )
+							&& '' === $data['isMuted']
 							&& isset( $data['labelMute'] )
-							&& isset( $data['labelUnmute'] );
+							&& isset( $data['labelUnmute'] )
+							&& isset( $data['confirmMuted'] )
+							&& isset( $data['confirmUnmuted'] )
+							&& isset( $data['errorMessage'] );
 					}
 				)
 			);
 
 		$admin_bar->enqueue_assets();
 
-		$this->assertTrue( true );
+		$this->addToAssertionCount( 1 );
 	}
 }

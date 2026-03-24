@@ -10,7 +10,7 @@ namespace TomMcFarlin\MMN\Tests\Unit;
 use TomMcFarlin\MMN\NotificationMuter;
 use Brain\Monkey\Functions;
 
-class NotificationMuterTest extends \MMN_TestCase {
+class NotificationMuterTest extends \MuteMenu_TestCase {
 
 	/**
 	 * @test
@@ -24,7 +24,7 @@ class NotificationMuterTest extends \MMN_TestCase {
 
 		$muter->register();
 
-		$this->assertTrue( true );
+		$this->addToAssertionCount( 1 );
 	}
 
 	/**
@@ -39,8 +39,8 @@ class NotificationMuterTest extends \MMN_TestCase {
 
 		Functions\expect( 'get_user_meta' )
 			->once()
-			->with( 1, 'tm_mute_menu_notifications', true )
-			->andReturn( false );
+			->with( 1, 'mutemenu_muted', true )
+			->andReturn( '' );
 
 		$this->assertFalse( $muter->is_muted() );
 	}
@@ -57,8 +57,8 @@ class NotificationMuterTest extends \MMN_TestCase {
 
 		Functions\expect( 'get_user_meta' )
 			->once()
-			->with( 1, 'tm_mute_menu_notifications', true )
-			->andReturn( true );
+			->with( 1, 'mutemenu_muted', true )
+			->andReturn( '1' );
 
 		$this->assertTrue( $muter->is_muted() );
 	}
@@ -75,8 +75,8 @@ class NotificationMuterTest extends \MMN_TestCase {
 
 		Functions\expect( 'get_user_meta' )
 			->once()
-			->with( 1, 'tm_mute_menu_notifications', true )
-			->andReturn( true );
+			->with( 1, 'mutemenu_muted', true )
+			->andReturn( '1' );
 
 		$first  = $muter->is_muted();
 		$second = $muter->is_muted();
@@ -88,20 +88,51 @@ class NotificationMuterTest extends \MMN_TestCase {
 	/**
 	 * @test
 	 */
-	public function toggle_flips_from_false_to_true() {
+	public function toggle_returns_current_state_for_unauthorized_users() {
 		$muter = new NotificationMuter();
+
+		Functions\expect( 'current_user_can' )
+			->once()
+			->with( 'update_plugins' )
+			->andReturn( false );
 
 		Functions\expect( 'get_current_user_id' )
 			->andReturn( 1 );
 
 		Functions\expect( 'get_user_meta' )
 			->once()
-			->with( 1, 'tm_mute_menu_notifications', true )
-			->andReturn( false );
+			->with( 1, 'mutemenu_muted', true )
+			->andReturn( '' );
+
+		Functions\expect( 'update_user_meta' )->never();
+
+		$result = $muter->toggle();
+
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @test
+	 */
+	public function toggle_flips_from_false_to_true() {
+		$muter = new NotificationMuter();
+
+		Functions\expect( 'current_user_can' )
+			->once()
+			->with( 'update_plugins' )
+			->andReturn( true );
+
+		Functions\expect( 'get_current_user_id' )
+			->andReturn( 1 );
+
+		Functions\expect( 'get_user_meta' )
+			->once()
+			->with( 1, 'mutemenu_muted', true )
+			->andReturn( '' );
 
 		Functions\expect( 'update_user_meta' )
 			->once()
-			->with( 1, 'tm_mute_menu_notifications', true );
+			->with( 1, 'mutemenu_muted', '1' );
 
 		$result = $muter->toggle();
 
@@ -114,17 +145,22 @@ class NotificationMuterTest extends \MMN_TestCase {
 	public function toggle_flips_from_true_to_false() {
 		$muter = new NotificationMuter();
 
+		Functions\expect( 'current_user_can' )
+			->once()
+			->with( 'update_plugins' )
+			->andReturn( true );
+
 		Functions\expect( 'get_current_user_id' )
 			->andReturn( 1 );
 
 		Functions\expect( 'get_user_meta' )
 			->once()
-			->with( 1, 'tm_mute_menu_notifications', true )
-			->andReturn( true );
+			->with( 1, 'mutemenu_muted', true )
+			->andReturn( '1' );
 
 		Functions\expect( 'update_user_meta' )
 			->once()
-			->with( 1, 'tm_mute_menu_notifications', false );
+			->with( 1, 'mutemenu_muted', '0' );
 
 		$result = $muter->toggle();
 
@@ -143,8 +179,8 @@ class NotificationMuterTest extends \MMN_TestCase {
 
 		Functions\expect( 'get_user_meta' )
 			->once()
-			->with( 1, 'tm_mute_menu_notifications', true )
-			->andReturn( false );
+			->with( 1, 'mutemenu_muted', true )
+			->andReturn( '' );
 
 		ob_start();
 		$muter->inject_inline_css();
@@ -165,17 +201,50 @@ class NotificationMuterTest extends \MMN_TestCase {
 
 		Functions\expect( 'get_user_meta' )
 			->once()
-			->with( 1, 'tm_mute_menu_notifications', true )
-			->andReturn( true );
+			->with( 1, 'mutemenu_muted', true )
+			->andReturn( '1' );
 
 		ob_start();
 		$muter->inject_inline_css();
 		$output = ob_get_clean();
 
-		$this->assertStringContainsString( '<style id="tm-mmn-hide">', $output );
+		$this->assertStringContainsString( '<style id="mutemenu-hide">', $output );
 		$this->assertStringContainsString( '.update-plugins', $output );
 		$this->assertStringContainsString( '#wp-admin-bar-updates', $output );
 		$this->assertStringContainsString( '.plugin-update-tr', $output );
 		$this->assertStringContainsString( 'display: none', $output );
+	}
+
+	/**
+	 * @test
+	 */
+	public function is_muted_returns_false_for_zero_user_id() {
+		$muter = new NotificationMuter();
+
+		Functions\expect( 'get_current_user_id' )
+			->once()
+			->andReturn( 0 );
+
+		Functions\expect( 'get_user_meta' )->never();
+
+		$this->assertFalse( $muter->is_muted() );
+	}
+
+	/**
+	 * @test
+	 */
+	public function toggle_returns_false_for_zero_user_id() {
+		$muter = new NotificationMuter();
+
+		Functions\expect( 'get_current_user_id' )
+			->andReturn( 0 );
+
+		Functions\expect( 'current_user_can' )->never();
+		Functions\expect( 'update_user_meta' )->never();
+		Functions\expect( 'get_user_meta' )->never();
+
+		$result = $muter->toggle();
+
+		$this->assertFalse( $result );
 	}
 }
