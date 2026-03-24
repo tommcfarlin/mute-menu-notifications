@@ -39,7 +39,6 @@ The preference is stored per-user and persists across page loads. Only users wit
 
 1. Navigate to the `plugins` directory of your WordPress installation.
 2. Run `git clone git@github.com:tommcfarlin/mute-menu-notifications.git`
-3. Run `composer install` from the plugin directory.
 
 ## Development
 
