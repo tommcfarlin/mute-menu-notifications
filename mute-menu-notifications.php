@@ -19,6 +19,7 @@
  * License:     GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
  * Text Domain: mute-menu-notifications
+ * Update URI:  https://github.com/tommcfarlin/mute-menu-notifications/
  */
 
 defined( 'WPINC' ) || die;
@@ -44,6 +45,9 @@ spl_autoload_register(
 		}
 	}
 );
+
+$updater = new TomMcFarlin\MMN\Updater( MUTEMENU_PLUGIN_FILE, MUTEMENU_VERSION );
+$updater->register();
 
 if ( is_admin() || wp_doing_ajax() ) {
 	TomMcFarlin\MMN\Plugin::init();
