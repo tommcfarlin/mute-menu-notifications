@@ -134,7 +134,7 @@ class Updater {
 	 * @param string       $remote_source Path to the remote source directory.
 	 * @param \WP_Upgrader $upgrader      The WP_Upgrader instance.
 	 * @param array        $hook_extra    Extra arguments passed to the upgrader.
-	 * @return string|WP_Error Corrected source path or original on failure.
+	 * @return string Corrected source path or original on failure.
 	 */
 	public function fix_source_directory( $source, $remote_source, $upgrader, $hook_extra ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		if ( ! isset( $hook_extra['plugin'] ) || $hook_extra['plugin'] !== $this->plugin_basename ) {

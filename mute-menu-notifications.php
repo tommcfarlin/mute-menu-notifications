@@ -15,6 +15,7 @@
  * Author URI:  https://tommcfarlin.com
  * Version:     2.0.0
  * Requires at least: 6.9
+ * Tested up to:  6.9.1
  * Requires PHP: 7.4
  * License:     GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.en.html

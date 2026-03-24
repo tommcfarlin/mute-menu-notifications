@@ -6,7 +6,7 @@ Thank you for your interest in contributing. This document outlines the workflow
 
 This project uses the following branch structure:
 
-- **master** -- production-ready code; tagged releases are cut from here
+- **main** -- production-ready code; tagged releases are cut from here
 - **develop** -- integration branch for the next release
 - **release-X.Y.Z** -- release preparation branches, created from `develop`
 - **Issue branches** -- feature/fix/enhancement work, branched from the current `release-X.Y.Z`
@@ -36,9 +36,9 @@ Example: `fix/issue-42-modal-not-closing`
 1. Create an issue using one of the provided templates.
 2. Branch from the current `release-X.Y.Z` branch using the naming convention above.
 3. Do your work, committing with [Conventional Commits](https://www.conventionalcommits.org/) style messages.
-4. Open a pull request into `develop`.
+4. Open a pull request into the `release-X.Y.Z` branch.
 5. Fill out the PR template, request review, and address feedback.
-6. Once approved, the PR is merged into `develop`.
+6. Once approved, the PR is merged into the release branch.
 
 ## Pull Request Workflow
 
@@ -47,11 +47,10 @@ When opening a PR:
 1. Fill out the PR template completely.
 2. Link the related issue (`Closes #<number>`).
 3. Update `CHANGELOG.md` with your changes under `[Unreleased]`.
-4. Update `readme.txt` changelog section if the change is user-facing.
-5. Ensure all checks pass:
+4. Ensure all checks pass:
    - `composer test` -- run the test suite
    - `composer lint` -- check WordPress Coding Standards compliance
-6. Request a review.
+5. Request a review.
 
 ## Changelog Maintenance
 

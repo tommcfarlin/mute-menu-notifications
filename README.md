@@ -5,15 +5,28 @@
 ![PHP Version](https://img.shields.io/badge/php-%3E%3D7.4-purple)
 ![License](https://img.shields.io/badge/license-GPL--3.0-orange)
 
-Allows you to mute the update notification badges in the WordPress admin menu.
+Silence distracting update badges in the WordPress admin menu with a single click -- and bring them back whenever you're ready.
 
-## Description
+| Notifications visible | Notifications muted |
+|---|---|
+| ![Badges showing](.github/screenshot-off.png) | ![Badges hidden](.github/screenshot-on.png) |
 
-Mute Menu Notifications adds a toggle to the WordPress admin bar that lets administrators hide or show the update notification badges throughout the admin menu.
+## Why?
 
-When muted, the red update count bubbles on menu items like Plugins, Themes, and Updates are hidden. On the Plugins page, the individual plugin update rows are also hidden.
+If you've ever been in the middle of building something and found yourself distracted by a wall of red notification bubbles, this plugin is for you.
 
-The preference is stored per-user and persists across page loads. Only users with the `update_plugins` capability (Administrators by default) can see and use the toggle. This capability was chosen because the notification badges this plugin hides (plugin updates, theme updates, core updates) are only visible to users who have that capability.
+Maybe you're working on a staging site where the badge counts are meaningless noise. Maybe you're walking a client through their dashboard and would rather not field questions about why everything looks like it's on fire. Or maybe you just handle updates on your own schedule and don't need a constant reminder that three plugins want attention.
+
+Mute Menu Notifications gives you a simple toggle in the admin bar. Click it, the badges disappear. Click it again, they come back. That's the whole plugin.
+
+## Features
+
+- **Instant toggle from the admin bar** -- no settings page, no configuration, no extra menu items
+- **Per-user preference** -- each administrator controls their own mute state independently
+- **Server-side rendering** -- badges are hidden via inline CSS in the document head, so there's no flicker on page load
+- **Zero-config** -- activate the plugin and the toggle appears; deactivate and everything reverts
+- **Accessible** -- ARIA attributes, keyboard navigation, and screen reader support built in
+- **Lightweight** -- no external dependencies, no database tables, no options pages
 
 ## Requirements
 
@@ -39,6 +52,12 @@ The preference is stored per-user and persists across page loads. Only users wit
 
 1. Navigate to the `plugins` directory of your WordPress installation.
 2. Run `git clone git@github.com:tommcfarlin/mute-menu-notifications.git`
+
+## How It Works
+
+Once activated, a "Mute Notifications" button appears in the admin bar for any user with the `update_plugins` capability (Administrators by default). Clicking the toggle hides the red update count bubbles on menu items like Plugins, Themes, and Updates, as well as the individual plugin update rows on the Plugins page.
+
+The preference is stored as user meta and persists across sessions. The next time you log in, your mute state is right where you left it.
 
 ## Development
 
