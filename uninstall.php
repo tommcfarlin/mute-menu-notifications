@@ -11,3 +11,4 @@ defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
 delete_metadata( 'user', 0, 'mutemenu_muted', '', true );
 delete_option( 'tm_mute_menu_notifications' );
+delete_transient( 'mutemenu_github_release' );
